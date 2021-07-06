@@ -9,6 +9,8 @@
  *       b if sel == 01
  *       c if sel == 10
  *       d if sel == 11
+ *
+ * Bus index goes from right (LSB) to left (MSB)
  */
 
 CHIP Mux4Way16 {
@@ -16,5 +18,7 @@ CHIP Mux4Way16 {
     OUT out[16];
 
     PARTS:
-    // Put your code here:
+    Mux16(a=a, b=b, sel=sel[0], out=mux16AB);
+    Mux16(a=c, b=d, sel=sel[0], out=mux16CD);
+    Mux16(a=mux16AB, b=mux16CD, sel=sel[1], out=out);
 }
