@@ -11,6 +11,9 @@
 // "white" in every pixel;
 // the screen should remain fully clear as long as no key is pressed.
 
+@last
+M=0 // last = 0
+
 (INPUT)
     @SCREEN
     D=A // Data = 16384
@@ -18,10 +21,24 @@
     M=D // i = Data
     @KBD
     D=M // Data = Keyboard
-    @CLEAR
-    D;JEQ // Jump to CLEAR if Data == 0
+    @PRECLEAR
+    D;JEQ // Jump to PRECLEAR if Data == 0
+    @KBD
+    D=M // Data = Keyboard
+    @last
+    M=D // last = Data
     @FILL
     0;JMP // Jump to FILL
+
+(PRECLEAR)
+    @last
+    D=M // Data = last
+    @KBD
+    D=D+M // Data += Keyboard
+    @INPUT
+    D;JEQ // Jump to INPUT if Data == 0
+    @CLEAR
+    0;JMP // Jump to CLEAR
 
 (CLEAR)
     @i
